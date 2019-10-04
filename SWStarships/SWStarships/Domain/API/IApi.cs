@@ -1,9 +1,12 @@
-﻿namespace SWStarships.Domain.API
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace SWStarships.Domain.API
 {
     public interface IApi
     {
         string BaseUrl { get; }
 
-        T Get<T>( string path ) where T : class;
+        Task<T> Get<T>( string path ) where T : class;
     }
 }

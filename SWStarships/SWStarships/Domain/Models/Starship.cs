@@ -2,10 +2,17 @@
 
 namespace SWStarships.Domain.Models
 {
+
+    public class RootObject
+    {
+        public int count { get; set; }
+        public string next { get; set; }
+        public object previous { get; set; }
+        public Starship[] results { get; set; }
+    }
+
     public class Starship
     {
-        #region Properties
-
         public string name { get; set; }
         public string model { get; set; }
         public string manufacturer { get; set; }
@@ -24,7 +31,5 @@ namespace SWStarships.Domain.Models
         public DateTime created { get; set; }
         public DateTime edited { get; set; }
         public string url { get; set; }
-
-        #endregion
     }
 }

@@ -2,6 +2,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using SWStarships.Domain.API;
 
 namespace SWStarships
 {
@@ -32,9 +33,9 @@ namespace SWStarships
 
             #region [Types]
 
-            #endregion
+            builder.RegisterType<StarWarsApi>().As<IApi>();
 
-            //builder.RegisterType<IServiceProvider>().As( null );
+            #endregion
 
             builder.Populate( collection );
 

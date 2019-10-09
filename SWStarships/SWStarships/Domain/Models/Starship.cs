@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace SWStarships.Domain.Models
 {
 
-    public class RootObject
+    public class Result
     {
         public int count { get; set; }
         public string next { get; set; }
         public object previous { get; set; }
-        public Starship[] results { get; set; }
+
+        [JsonProperty( "results" )]
+        public Starship[] starships { get; set; }
     }
 
     public class Starship

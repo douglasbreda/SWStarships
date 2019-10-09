@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using SWStarships.Domain.API;
+using SWStarships.Infrastructure.Implementations;
+using SWStarships.Infrastructure.Interfaces;
 
 namespace SWStarships
 {
@@ -14,11 +17,15 @@ namespace SWStarships
 
         #endregion
 
-        static void Main( string[] args )
+        static async Task Main( string[] args )
         {
             RegisterServices();
 
-            ///Call the class which starts the app
+            IApi api = _serviceProvider.GetService<IApi>();
+            IDownload download = _serviceProvider.GetService<IDownload>();
+
+            App app = new App( download, api );
+            await app.Start();
 
             DisposeServices();
         }
@@ -34,6 +41,7 @@ namespace SWStarships
             #region [Types]
 
             builder.RegisterType<StarWarsApi>().As<IApi>();
+            builder.RegisterType<Download>().As<IDownload>();
 
             #endregion
 

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using SWStarships.Domain.Models;
 
 namespace SWStarships.Domain.API
 {
@@ -14,6 +11,7 @@ namespace SWStarships.Domain.API
         #region [Properties]
 
         private HttpClient _httpClient;
+        private string _baseUrl = string.Empty;
 
         #endregion
 
@@ -25,6 +23,7 @@ namespace SWStarships.Domain.API
         public StarWarsApi()
         {
             _httpClient = new HttpClient();
+            _baseUrl = "https://swapi.co/api/starships/";
             StartConnection();
         }
 
@@ -33,11 +32,22 @@ namespace SWStarships.Domain.API
         #region [Interface]
 
         //"https://swapi.co/api/starships/"
-        public string BaseUrl { get => "https://swapi.co/api/"; }
+        public string BaseUrl { get => _baseUrl; }
 
-        public async Task<T> Get<T>( string path ) where T : class
-        {            
-            HttpResponseMessage response = await _httpClient.GetAsync( path );
+        /// <summary>
+        /// Makes the first call to the api
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public async Task<T> Get<T>( string path = "" ) where T : class
+        {
+            HttpResponseMessage response = null;
+
+            if ( string.IsNullOrEmpty( path ) )
+                response = await _httpClient.GetAsync( "" );
+            else
+                response = await _httpClient.GetAsync( path );
 
             string jsonString = await response.Content.ReadAsStringAsync();
 
@@ -45,6 +55,18 @@ namespace SWStarships.Domain.API
 
             return starshipObject;
         }
+
+        /// <summary>
+        /// Get the result from the next returned on the previous request
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        //public Task<T> GetNextPage<T>( string url ) where T : class
+        //{
+        //    string path = url.Substring( url.LastIndexOf( "/" ) + 1 );
+        //    return Get<T>( path );
+        //}
 
         #endregion
 

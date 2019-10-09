@@ -7,6 +7,8 @@ namespace SWStarships.Domain.API
     {
         string BaseUrl { get; }
 
-        Task<T> Get<T>( string path ) where T : class;
+        Task<T> Get<T>( string path = "" ) where T : class;
+
+        //Task<T> GetNextPage<T>( string url ) where T : class;
     }
 }

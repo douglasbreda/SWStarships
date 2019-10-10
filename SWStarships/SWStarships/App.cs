@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using SWStarships.Domain.API;
 using SWStarships.Domain.Models;
@@ -14,6 +13,8 @@ namespace SWStarships
 
         private readonly IDownload _download;
         private readonly IApi _api;
+        private readonly IConsoleLogger _logger;
+        private readonly IFunction _function;
 
         #endregion
 
@@ -23,10 +24,12 @@ namespace SWStarships
         /// Constructor who receives an provider to get the instances and send to the classes
         /// </summary>
         /// <param name="provider"></param>
-        public App( IDownload download, IApi api )
+        public App( IDownload download, IApi api, IConsoleLogger logger, IFunction function )
         {
             _download = download;
             _api = api;
+            _logger = logger;
+            _function = function;
         }
 
         #endregion
@@ -38,9 +41,9 @@ namespace SWStarships
         /// </summary>
         public async Task Start()
         {
-            await DownloadStarships();
+            List<Starship> starships = await DownloadStarships();
             long userInput = GetUserInput();
-
+            CalculateStops( userInput, starships );
         }
 
         /// <summary>
@@ -49,10 +52,13 @@ namespace SWStarships
         /// <returns></returns>
         private async Task<List<Starship>> DownloadStarships()
         {
-            Console.WriteLine( "Downloading starships from API.." );
+            _logger.Message( "Downloading starships from API.." );
             List<Starship> _starships = await _download.GetStarships();
 
-            Console.WriteLine( $"Found {_starships.Count} starships" );
+            if ( _starships == null || _starships.Count == 0 )
+                _logger.Error( "Was not possible to get the starthips from the API." );
+            else
+                _logger.Message( $"Found {_starships.Count} starships" );
 
             return _starships;
         }
@@ -64,7 +70,7 @@ namespace SWStarships
         private long GetUserInput()
         {
             long convertedValue = 0;
-            Console.WriteLine( "Type the distance in MGLT: " );
+            _logger.Message( "Type the distance in MGLT: " );
             string value = Console.ReadLine();
 
             long.TryParse( value, out convertedValue );
@@ -76,11 +82,22 @@ namespace SWStarships
         /// Calculates the distance for each starship
         /// </summary>
         /// <param name="starships"></param>
-        private void CalculateStops( List<Starship> starships )
+        private void CalculateStops( long distance, List<Starship> starships )
         {
             foreach ( Starship starship in starships )
             {
+                if ( starship.MGLT.ToLower().Equals( "unknown" ) )
+                {
+                    _logger.Error( $"Unknown MGLT for {starship.name}" );
+                    continue;
+                }
+                Consumable consumable = _function.SeparateConsumable( starship.consumables );
 
+                long hours = _function.CalculateHours( consumable );
+
+                long stops = _function.CalculateStops( distance, Convert.ToInt64( starship.MGLT ), hours );
+
+                _logger.Success( $"The starship {starship.name} needs {stops} stop(s)" );
             }
         }
 

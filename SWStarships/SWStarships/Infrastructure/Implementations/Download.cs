@@ -14,6 +14,8 @@ namespace SWStarships.Infrastructure.Implementations
         #region [Properties]
 
         private readonly IApi _api;
+        private readonly IFunction _function;
+        private List<Starship> _starships;
 
         #endregion
 
@@ -23,16 +25,18 @@ namespace SWStarships.Infrastructure.Implementations
         /// Default constructor which receives an interface of IApi as parameter via dependecy injection
         /// </summary>
         /// <param name="api"></param>
-        public Download( IApi api )
+        public Download( IApi api, IFunction function )
         {
             _api = api;
+            _function = function;
+            _starships = new List<Starship>();
         }
 
         #endregion
 
         #region [Methods]
 
-        
+
 
         /// <summary>
         /// Extract information about the startships from the API
@@ -40,15 +44,20 @@ namespace SWStarships.Infrastructure.Implementations
         /// <returns></returns>
         public async Task<List<Starship>> GetStarships( string path = "" )
         {
-            List<Starship> _starships = new List<Starship>();
-            Result _result = await _api.Get<Result>();
+            Result _result = await _api.Get<Result>( path );
 
-            if ( string.IsNullOrEmpty( _result.next ) )
+            if ( _result.next.HasValue() )
             {
-                string page = Function.GetNextPage( path );
-                _starships.AddRange( await GetStarships( page ) );
-            }
+                string page = _function.GetNextPage( _result.next );
+                await GetStarships( page );
 
+                _starships.AddRange( _result.starships );
+            }
+            else
+                _starships.AddRange( _result.starships );
+
+
+            //return _result.starships.ToList();
             return _starships;
         }
 

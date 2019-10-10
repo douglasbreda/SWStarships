@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SWStarships.Domain.Models;
+﻿using SWStarships.Domain.Models;
 
 namespace SWStarships.Infrastructure.Interfaces
 {

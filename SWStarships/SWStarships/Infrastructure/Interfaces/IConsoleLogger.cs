@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SWStarships.Infrastructure.Interfaces
+﻿namespace SWStarships.Infrastructure.Interfaces
 {
     public interface IConsoleLogger
     {
@@ -11,6 +7,8 @@ namespace SWStarships.Infrastructure.Interfaces
         void Success( string message );
 
         void Error( string message );
+
+        void Message( string message );
 
         #endregion
     }

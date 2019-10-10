@@ -67,7 +67,7 @@ namespace SWStarships.Infrastructure.Implementations
 
             string[] part = consumableString.Split( ' ' );
 
-            return new Consumable( ToTimeUnit( part[0] ), Convert.ToInt64( part[1] ) );
+            return new Consumable( ToTimeUnit( part[1] ), Convert.ToInt64( part[0] ) );
         }
 
         /// <summary>
@@ -82,6 +82,9 @@ namespace SWStarships.Infrastructure.Implementations
                 case "day":
                 case "days":
                     return TimeUnit.Day;
+                case "month":
+                case "months":
+                    return TimeUnit.Month;
                 case "week":
                 case "weeks":
                     return TimeUnit.Week;

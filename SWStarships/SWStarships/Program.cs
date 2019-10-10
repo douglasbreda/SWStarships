@@ -21,10 +21,7 @@ namespace SWStarships
         {
             RegisterServices();
 
-            IApi api = _serviceProvider.GetService<IApi>();
-            IDownload download = _serviceProvider.GetService<IDownload>();
-
-            App app = new App( download, api );
+            App app = _serviceProvider.GetService<App>();
             await app.Start();
 
             DisposeServices();
@@ -42,6 +39,9 @@ namespace SWStarships
 
             builder.RegisterType<StarWarsApi>().As<IApi>();
             builder.RegisterType<Download>().As<IDownload>();
+            builder.RegisterType<Function>().As<IFunction>();
+            builder.RegisterType<ConsoleLogger>().As<IConsoleLogger>();
+            builder.RegisterType<App>();
 
             #endregion
 

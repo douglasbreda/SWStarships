@@ -9,7 +9,7 @@ using Xunit;
 
 namespace SWStarshipsTest.Infrastructure
 {
-    public class FunctionTest : Base
+    public class TestFunction : Base
     {
         #region [Properties]
 
@@ -19,7 +19,7 @@ namespace SWStarshipsTest.Infrastructure
 
         #region [Constructor]
 
-        public FunctionTest()
+        public TestFunction()
         {
             _function = GetService<IFunction>();
         }

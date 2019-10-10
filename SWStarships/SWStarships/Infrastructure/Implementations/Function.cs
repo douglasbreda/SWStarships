@@ -18,6 +18,9 @@ namespace SWStarships.Infrastructure.Implementations
         /// <returns></returns>
         public long CalculateHours( Consumable consumable )
         {
+            if ( consumable == null )
+                throw new ArgumentNullException( nameof( consumable ) );
+
             switch ( consumable.Unit )
             {
                 case TimeUnit.Day:
@@ -52,7 +55,14 @@ namespace SWStarships.Infrastructure.Implementations
         /// <returns></returns>
         public string GetNextPage( string completePath )
         {
-            return completePath.Substring( completePath.LastIndexOf( "/" ) + 1 );
+            try
+            {
+                return completePath.Substring( completePath.LastIndexOf( "/" ) + 1 );
+            }
+            catch
+            {
+                return "";
+            }
         }
 
         /// <summary>
@@ -66,6 +76,9 @@ namespace SWStarships.Infrastructure.Implementations
                 throw new ArgumentNullException( consumableString );
 
             string[] part = consumableString.Split( ' ' );
+
+            if ( part.Length != 2 )
+                return new Consumable( TimeUnit.None, 0 );
 
             return new Consumable( ToTimeUnit( part[1] ), Convert.ToInt64( part[0] ) );
         }

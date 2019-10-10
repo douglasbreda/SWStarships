@@ -10,6 +10,7 @@ using SWStarships.Infrastructure.Interfaces;
 namespace SWStarships
 {
     class Program
+
     {
         #region [Properties]
 
@@ -22,9 +23,25 @@ namespace SWStarships
             RegisterServices();
 
             App app = _serviceProvider.GetService<App>();
-            await app.Start();
+            long userInput = GetUserInput();
+            await app.Start( userInput );
 
             DisposeServices();
+        }
+
+        // <summary>
+        /// Gets the user's input
+        /// </summary>
+        /// <returns></returns>
+        private static long GetUserInput()
+        {
+            long convertedValue = 0;
+            Console.Write( "Type the distance in MGLT: " );
+            string value = Console.ReadLine();
+
+            long.TryParse( value, out convertedValue );
+
+            return convertedValue;
         }
 
         /// <summary>

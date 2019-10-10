@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SWStarships.Domain.API;
 using SWStarships.Domain.Models;
+using SWStarships.Infrastructure;
 using SWStarships.Infrastructure.Interfaces;
 
 namespace SWStarships
@@ -12,7 +13,6 @@ namespace SWStarships
         #region [Properties]
 
         private readonly IDownload _download;
-        private readonly IApi _api;
         private readonly IConsoleLogger _logger;
         private readonly IFunction _function;
 
@@ -24,10 +24,9 @@ namespace SWStarships
         /// Constructor who receives an provider to get the instances and send to the classes
         /// </summary>
         /// <param name="provider"></param>
-        public App( IDownload download, IApi api, IConsoleLogger logger, IFunction function )
+        public App( IDownload download, IConsoleLogger logger, IFunction function )
         {
             _download = download;
-            _api = api;
             _logger = logger;
             _function = function;
         }
@@ -39,11 +38,10 @@ namespace SWStarships
         /// <summary>
         /// Configures the app and run
         /// </summary>
-        public async Task Start()
+        public async Task Start( long distance )
         {
             List<Starship> starships = await DownloadStarships();
-            long userInput = GetUserInput();
-            CalculateStops( userInput, starships );
+            CalculateStops( distance, starships );
         }
 
         /// <summary>
@@ -64,21 +62,6 @@ namespace SWStarships
         }
 
         /// <summary>
-        /// Gets the user's input
-        /// </summary>
-        /// <returns></returns>
-        private long GetUserInput()
-        {
-            long convertedValue = 0;
-            _logger.Message( "Type the distance in MGLT: " );
-            string value = Console.ReadLine();
-
-            long.TryParse( value, out convertedValue );
-
-            return convertedValue;
-        }
-
-        /// <summary>
         /// Calculates the distance for each starship
         /// </summary>
         /// <param name="starships"></param>
@@ -95,7 +78,7 @@ namespace SWStarships
 
                 long hours = _function.CalculateHours( consumable );
 
-                long stops = _function.CalculateStops( distance, Convert.ToInt64( starship.MGLT ), hours );
+                long stops = _function.CalculateStops( distance, starship.MGLT.ToInt64(), hours );
 
                 _logger.Success( $"The starship {starship.name} needs {stops} stop(s)" );
             }

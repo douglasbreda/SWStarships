@@ -56,18 +56,6 @@ namespace SWStarships.Domain.API
             return starshipObject;
         }
 
-        /// <summary>
-        /// Get the result from the next returned on the previous request
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        //public Task<T> GetNextPage<T>( string url ) where T : class
-        //{
-        //    string path = url.Substring( url.LastIndexOf( "/" ) + 1 );
-        //    return Get<T>( path );
-        //}
-
         #endregion
 
         #region [Methods]

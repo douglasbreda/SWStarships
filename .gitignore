@@ -3,7 +3,7 @@
 ################################################################################
 
 /SWStarships/.vs/SWStarships
-/SWStarships/SWStarships/bin/Debug/netcoreapp3.0
-/SWStarships/SWStarships/obj
-/SWStarships/SWStarshipsTest/obj
-/SWStarships/SWStarshipsTest/bin/Debug/netcoreapp3.0
+/SWStarships/bin/Debug/netcoreapp3.0
+/SWStarships/obj
+/SWStarshipsTest/obj
+/SWStarshipsTest/bin/Debug/netcoreapp3.0

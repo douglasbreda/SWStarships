@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SWStarships.Domain.API;
 using SWStarships.Domain.Models;
 using SWStarships.Infrastructure;
 using SWStarships.Infrastructure.Interfaces;

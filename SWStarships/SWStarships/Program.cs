@@ -20,29 +20,37 @@ namespace SWStarships
 
         static async Task Main( string[] args )
         {
-            RegisterServices();
+            try
+            {
+                RegisterServices();
+                string value = "";
+                App app = _serviceProvider.GetService<App>();
 
-            App app = _serviceProvider.GetService<App>();
-            long userInput = GetUserInput();
-            await app.Start( userInput );
+                do
+                {
+                    long convertedValue = 0;
+                    Console.Write( "Type the distance in MGLT: " );
+                    value = Console.ReadLine();
 
-            DisposeServices();
+                    if ( long.TryParse( value, out convertedValue ) )
+                        await app.Start( convertedValue );
+                    else
+                    {
+                        if ( value != "exit" )
+                            Console.WriteLine( "The value typed is not valid." );
+                    }
+
+                    DisposeServices();
+
+                } while ( value != "exit" );
+
+            }
+            catch ( Exception ex )
+            {
+                Console.WriteLine( ex.Message );
+            }
         }
 
-        // <summary>
-        /// Gets the user's input
-        /// </summary>
-        /// <returns></returns>
-        private static long GetUserInput()
-        {
-            long convertedValue = 0;
-            Console.Write( "Type the distance in MGLT: " );
-            string value = Console.ReadLine();
-
-            long.TryParse( value, out convertedValue );
-
-            return convertedValue;
-        }
 
         /// <summary>
         /// Configures Autofac and register the services

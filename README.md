@@ -4,8 +4,6 @@ Console application used to calculate the number of stops to resupply that a sta
 
 ## How it works
 
-When the application starts, you will be asked to enter a distance. If it is a valid distance, the app goes to [swapi.co](https://swapi.co/), an API with information about Star Wars movies and download all starships. The result will be shown in green if the MGLT of the starship is valid and in red if is not. The application finishes, when you type exit.
-
 When the application starts, you will be asked to enter a distance. If it is a valid distance, the app goes to [swapi.co](https://swapi.co/), an API with information about Star Wars movies and download all starships. The results will be shown in green if the MGLT of the starship is valid otherwise will be shown in red. The application finishes, when you type exit.
 
 ## Screenshot
